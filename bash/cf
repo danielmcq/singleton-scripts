@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Save arguments to array
+args=("$@")
+
+serviceName=$"ColdFusion ${args[0]} Application Server"
+command=${args[1]}
+
+case $command in
+	start)
+		net start "$serviceName"
+	;;
+	stop)
+		net stop "$serviceName"
+	;;
+	status)
+		sc query "$serviceName"
+	;;
+	*)
+		echo $"Usage: $0 <version number> {start|stop|status}"
+		exit 1
+esac

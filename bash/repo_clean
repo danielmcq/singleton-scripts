@@ -1,0 +1,36 @@
+#!/bin/bash
+FILES_LIST_NAME="/tmp/filename_list"
+OUTPUT_FILE_NAME="/tmp/results.txt"
+
+# Save arguments to array
+args=("$@")
+
+repoFolder=${args[0]}
+
+# Find files command
+# ls -AR1 --ignore="*.cfc" $repoFolder | grep ^[a-zA-Z0-9] | grep [^:]$ | sort | uniq -i > $FILES_LIST_NAME
+ls -AR1 $repoFolder | grep ^[a-zA-Z0-9] | grep [^:]$ | sort | uniq -i > $FILES_LIST_NAME
+
+# Clear output file
+cat /dev/null > $OUTPUT_FILE_NAME
+
+# Loop over each filename in the previously created list
+while read fileName; do
+	# If the file ends in .cfc or .jar, then truncate the extension
+	if [[ $fileName == *.cfc || $fileName == *.jar ]]; then
+		searchString=${fileName:0:-4}
+	else
+		searchString=$fileName
+	fi
+
+	# Recursively grep through every file in the repo to see if there is a match. Stop after first match
+	result=$(grep -rioIs -m 1 $searchString $repoFolder | head -n 1)
+	# If there is no match, then output to the screen and the output file
+	if [ ${#result} -eq 0 ]; then
+		echo $fileName | tee -a $OUTPUT_FILE_NAME
+		find $repoFolder -iname $fileName -printf '\t%p\n' | tee -a $OUTPUT_FILE_NAME
+	fi
+
+# put tab before output of a command
+# cat tmp | sort | uniq -i | while read line; do echo $'\t'$line; done
+done <$FILES_LIST_NAME
