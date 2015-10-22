@@ -2,7 +2,7 @@
 FILES_LIST_NAME="/tmp/filename_list"
 OUTPUT_FILE_NAME="/tmp/results.txt"
 
-# Save arguments to array
+# Saving arguments to array
 args=("$@")
 
 repoFolder=${args[0]}
@@ -24,11 +24,11 @@ while read fileName; do
 	fi
 
 	# Recursively grep through every file in the repo to see if there is a match. Stop after first match
-	result=$(grep -rioIs -m 1 $searchString $repoFolder | head -n 1)
+	result=$(grep -rioIs -m 1 "$searchString" $repoFolder | head -n 1)
 	# If there is no match, then output to the screen and the output file
 	if [ ${#result} -eq 0 ]; then
 		echo $fileName | tee -a $OUTPUT_FILE_NAME
-		find $repoFolder -iname $fileName -printf '\t%p\n' | tee -a $OUTPUT_FILE_NAME
+		find $repoFolder -iname "$fileName" -printf '\t%p\n' | tee -a $OUTPUT_FILE_NAME
 	fi
 
 # put tab before output of a command
