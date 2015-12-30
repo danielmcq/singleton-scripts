@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Save arguments to array
+args=("$@")
