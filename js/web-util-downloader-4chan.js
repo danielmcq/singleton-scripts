@@ -1,11 +1,4 @@
-/**
- * A simple Node.js based tool for downloading images from a sub-board on 4chan.
- *
- * @author Daniel McQuiston daniel.pro@dehugo.net
- *
- * @version 0.1
- */
-var fourchan = function( args ){
+var forums = function( args ){
 	var http      = require("http"),
 	    cheerio   = require("cheerio"),
 	    fs        = require("fs"),
@@ -79,7 +72,7 @@ var fourchan = function( args ){
 
 
 	var promptUserForUrl = function( callback ){
-		rl.question("Please input the complete URL of the 4chan board to download:\n", function( ans ){
+		rl.question("Please input the complete URL of the forum board to download:\n", function( ans ){
 			callback( ans );
 
 			rl.close();
@@ -101,4 +94,4 @@ var fourchan = function( args ){
 	return this;
 };
 
-fourchan( process.argv ).init();
+forums( process.argv ).init();
